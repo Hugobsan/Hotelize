@@ -24,4 +24,19 @@ class Hotel extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function getFullAddressAttribute()
+    {
+        return "{$this->address}, {$this->city}, {$this->state} {$this->zip_code}";
+    }
+
+    public function getZipCodeAttribute($value)
+    {
+        return substr($value, 0, 5) . '-' . substr($value, 5);
+    }
+
+    public function setZipCodeAttribute($value)
+    {
+        $this->attributes['zip_code'] = str_replace('-', '', $value);
+    }
 }
