@@ -13,12 +13,12 @@ class HotelTest extends TestCase
 
     public function test_create_hotel()
     {
-        $response = $this->postJson('/api/hotels', [
+        $response = $this->postJson('/hotels', [
             'name' => 'Hotel Test',
             'address' => '123 Main St',
             'city' => 'Springfield',
             'state' => 'IL',
-            'zip_code' => '62701',
+            'zip_code' => '62701-123',
             'website' => 'https://hotel.test',
         ]);
 
@@ -28,7 +28,7 @@ class HotelTest extends TestCase
             'address' => '123 Main St',
             'city' => 'Springfield',
             'state' => 'IL',
-            'zip_code' => '62701',
+            'zip_code' => '62701-123',
             'website' => 'https://hotel.test',
         ]);
     }
