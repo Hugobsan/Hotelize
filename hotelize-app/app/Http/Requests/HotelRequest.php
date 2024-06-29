@@ -31,6 +31,9 @@ class HotelRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get custom attributes for validator errors.
+     */
     public function attributes(): array
     {
         return [

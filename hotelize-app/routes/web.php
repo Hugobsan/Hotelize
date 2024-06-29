@@ -13,4 +13,4 @@ Route::get('/csrf', function () {
 });
 
 Route::resource('hotels', HotelController::class)->except('create', 'edit');
-Route::resource('hotels.rooms', RoomController::class)->shallow();
+Route::resource('hotels.rooms', RoomController::class)->except('create', 'edit')->shallow();
