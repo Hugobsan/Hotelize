@@ -166,12 +166,14 @@ body{
     margin: 20px 10px;
 }
 
-.tabela td a, .btn-search{
+.tabela td a, .btn-search, .btn-delete{
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
+    margin: 0px 5px 0px 0px;
     color: #642616;
     background: #cbcbcb;
+    text-decoration: none;
 }
 
 .btn-search{
@@ -194,6 +196,14 @@ body{
 .box-historico{
     max-height: 400px;
     overflow-y: auto;
+    position: relative;
+}
+
+.child-sticky{
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    background: #FFF;
 }
 
 label{

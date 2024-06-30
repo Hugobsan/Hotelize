@@ -13,7 +13,7 @@ class HotelController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::all();
+        $hotels = Hotel::orderBy('name')->get();
         
         return view('hotels.index', compact('hotels'));
     }
@@ -23,9 +23,14 @@ class HotelController extends Controller
      */
     public function store(HotelRequest $request)
     {
-        $hotel = Hotel::create($request->validated());
-        
-        return response()->json($hotel, 201);
+        try{
+            $hotel = Hotel::create($request->validated());
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao cadastrar hotel');
+            return redirect()->back();
+        }
+        toastr()->success('Hotel cadastrado com sucesso');
+        return redirect()->route('hotels.index');
     }
 
     /**
@@ -35,7 +40,7 @@ class HotelController extends Controller
     {
         $hotel = Hotel::findOrFail($id);
         
-        return response()->json($hotel);
+        return view('hotels.show', compact('hotel'));
     }
 
     /**
@@ -43,10 +48,16 @@ class HotelController extends Controller
      */
     public function update(HotelRequest $request, string $id)
     {
-        $hotel = Hotel::findOrFail($id);
-        $hotel->update($request->validated());
+        try{
+            $hotel = Hotel::findOrFail($id);
+            $hotel->update($request->validated());
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao atualizar hotel');
+            return redirect()->back();
+        }
+        toastr()->success('Hotel atualizado com sucesso');
         
-        return response()->json($hotel);
+        return back();
     }
 
     /**
@@ -54,9 +65,14 @@ class HotelController extends Controller
      */
     public function destroy(string $id)
     {
-        $hotel = Hotel::findOrFail($id);
-        $hotel->delete();
-        
-        return response()->status(204);
+        try{
+            $hotel = Hotel::findOrFail($id);
+            $hotel->delete();
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao excluir hotel');
+            return redirect()->back();
+        }
+        toastr()->success('Hotel excluído com sucesso');
+        return redirect()->route('hotels.index');
     }
 }

@@ -20,13 +20,13 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('autenticar
 Route::resource('users', UserController::class)->only(['create', 'store']);
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::resource('hotels', HotelController::class);
-    Route::resource('hotels.rooms', RoomController::class)->shallow();
+    Route::resource('hotels', HotelController::class)->except(['create']);
+    Route::resource('hotels.rooms', RoomController::class)->except(['index','create','show'])->shallow();
     Route::resource('users', UserController::class)->except(['create', 'store']);
 
     Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
-        Route::get('cep/{cep}', [CepController::class, 'getCepInfo'])->name('cep');
+        Route::get('cep/{cep?}/', [CepController::class, 'getCepInfo'])->name('cep');
     });
 });
