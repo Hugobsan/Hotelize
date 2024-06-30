@@ -1,6 +1,6 @@
 @extends('layouts.interno')
 
-@section('titulo', 'Hotelize - ' . $hotel->name)
+@push('titulo', 'Hotelize - ' . $hotel->name)
 
 @section('content')
     <div class="topo">

@@ -1,6 +1,6 @@
 @extends('layouts.interno')
 
-@section('titulo', 'Hotelize - Hoteis')
+@push('titulo', 'Hotelize - Hoteis')
 
 @section('content')
     <div class="topo d-flex flex-row justify-content-between">

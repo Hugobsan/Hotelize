@@ -1,6 +1,6 @@
 @extends('layouts.externo')
 
-@section('titulo', 'Login - Hotelize')
+@push('titulo', 'Login - Hotelize')
 
 @section('content')
     <h1>Login</h1>

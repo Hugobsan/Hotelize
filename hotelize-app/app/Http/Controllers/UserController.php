@@ -13,7 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -39,15 +40,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $user = User::findOrFail($id);
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -55,7 +49,10 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        toastr()->success('Usuário atualizado com sucesso');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -63,6 +60,15 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao excluir usuário');
+            return redirect()->back();
+        }
+        toastr()->success('Usuário excluído com sucesso');
+
+        return redirect()->route('users.index');
     }
 }
