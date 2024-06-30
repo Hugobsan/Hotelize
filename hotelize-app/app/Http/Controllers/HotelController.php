@@ -15,7 +15,7 @@ class HotelController extends Controller
     {
         $hotels = Hotel::all();
         
-        return response()->json($hotels);
+        return view('hotels.index', compact('hotels'));
     }
 
     /**

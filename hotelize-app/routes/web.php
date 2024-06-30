@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('hotels', HotelController::class);
     Route::resource('hotels.rooms', RoomController::class)->shallow();
+    Route::resource('users', UserController::class)->except(['create', 'store']);
 
     Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
         Route::get('cep/{cep}', [CepController::class, 'getCepInfo'])->name('cep');
