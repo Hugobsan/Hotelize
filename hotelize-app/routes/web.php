@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 //Login
 Route::post('login', [AuthController::class, 'login']);
 
-Route::get('/csrf', function () {
+Route::get('csrf', function () {
     return response()->json(['csrf' => csrf_token()]);
 });
 
