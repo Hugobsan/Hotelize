@@ -17,3 +17,6 @@ Route::resource('hotels', HotelController::class)->except('create', 'edit');
 Route::resource('hotels.rooms', RoomController::class)->except('create', 'edit')->shallow();
 
 Route::get('api/cep/{cep}', [CepController::class, 'getCepInfo'])->name('cep');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
