@@ -6,8 +6,15 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
+
+//Main route
+
 //Login
-Route::post('login', [AuthController::class, 'login']);
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/csrf', function () {
     return response()->json(['csrf' => csrf_token()]);
