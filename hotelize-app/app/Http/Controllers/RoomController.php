@@ -21,7 +21,7 @@ class RoomController extends Controller
         }
         toastr()->success('Quarto cadastrado com sucesso');
         
-        return back();
+        return redirect()->route('hotels.show', $room->hotel_id);
     }
 
 
@@ -39,7 +39,7 @@ class RoomController extends Controller
         }
         toastr()->success('Quarto atualizado com sucesso');
 
-        return back();
+        return redirect()->route('hotels.show', $room->hotel_id);
     }
 
     /**
@@ -56,6 +56,6 @@ class RoomController extends Controller
         }
         toastr()->success('Quarto excluído com sucesso');
 
-        return back();
+        return redirect()->route('hotels.show', $room->hotel_id);
     }
 }

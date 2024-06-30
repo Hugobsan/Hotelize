@@ -57,7 +57,7 @@ class HotelController extends Controller
         }
         toastr()->success('Hotel atualizado com sucesso');
         
-        return back();
+        return redirect()->route('hotels.index');
     }
 
     /**
