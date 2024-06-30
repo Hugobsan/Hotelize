@@ -20,7 +20,7 @@
 
     <style>
         .filler-login {
-            background-image: url("{{ asset('imgs/img_hotel2.jpg') }}");
+            background-image: url("{{ asset('imgs/img_hotel.jpg') }}");
             background-repeat: no-repeat;
             background-size: cover;
         }
