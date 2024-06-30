@@ -6,7 +6,12 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login()
+    {
+        return view('login.login');
+    }
+
+    public function authenticate(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -14,10 +19,12 @@ class AuthController extends Controller
         ]);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            //Gerando mensagem de erro com toastr
+            toastr()->error('Usuário ou senha inválidos');
+            return redirect()->route('login');
         }
 
-        return response()->json(['token' => $token]);   
+        return redirect()->route('hotels.index');   
     }
 
     public function logout()
