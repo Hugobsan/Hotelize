@@ -1,4 +1,0 @@
-services:
-    laravel.test:
-        ports:
-            - '80:80'
