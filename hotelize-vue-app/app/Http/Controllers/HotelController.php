@@ -14,7 +14,7 @@ class HotelController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::with('rooms')->orderBy('name')->get();
+        $hotels = Hotel::orderBy('name')->get();
 
         return Inertia::render('Hotels/Index', [
             'hotels' => $hotels,
@@ -39,9 +39,11 @@ class HotelController extends Controller
      */
     public function show(string $id)
     {
-        $hotel = Hotel::findOrFail($id);
+        $hotel = Hotel::with('rooms')->findOrFail($id);
         
-        return view('hotels.show', compact('hotel'));
+        return Inertia::render('Hotels/Show', [
+            'hotel' => $hotel,
+        ]);
     }
 
     /**
@@ -70,10 +72,8 @@ class HotelController extends Controller
             $hotel = Hotel::findOrFail($id);
             $hotel->delete();
         } catch (\Exception $e) {
-            toastr()->error('Erro ao excluir hotel');
             return redirect()->back();
         }
-        toastr()->success('Hotel excluído com sucesso');
         return redirect()->route('hotels.index');
     }
 }
