@@ -15,15 +15,15 @@ Route::get('/', function () {
     return redirect()->route('hotels.index');
 });
 
-// //Login
-// Route::get('/login', [AuthController::class, 'login'])->name('login');
-// Route::post('/login', [AuthController::class, 'authenticate'])->name('autenticar');
+//Login
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate'])->name('autenticar');
 
 // //Users
-// Route::resource('users', UserController::class)->only(['create', 'store']);
+Route::resource('users', UserController::class)->only(['create', 'store']);
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::resource('hotels', HotelController::class)->except(['create']);
     Route::resource('hotels.rooms', RoomController::class)->except(['index','create','show'])->shallow();
@@ -53,4 +53,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';

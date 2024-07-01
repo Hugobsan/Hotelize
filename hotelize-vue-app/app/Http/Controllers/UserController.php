@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -22,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('login.register');
+        return Inertia::render('Auth/Register');
     }
 
     /**
@@ -31,8 +34,10 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $user = User::create($request->all());
-        toastr()->success('Usuário cadastrado com sucesso');
-        return redirect()->route('login');
+        event(new Registered($user));
+        Auth::login($user);
+        
+        return redirect(route('hotels.index', absolute: false));
     }
 
     /**

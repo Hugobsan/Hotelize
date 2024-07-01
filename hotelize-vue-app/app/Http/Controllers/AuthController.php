@@ -2,36 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
     public function login()
     {
-        
-    }
-
-    public function authenticate(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        return Inertia::render('Auth/Login', [
+            'status' => session('status'),
         ]);
-
-        if (! $token = auth()->attempt($credentials)) {
-            //Gerando mensagem de erro com toastr
-            toastr()->error('Usuário ou senha inválidos');
-            return redirect()->route('login');
-        }
-
-        return redirect()->route('hotels.index');   
     }
 
-    public function logout()
+    public function authenticate(LoginRequest $request): RedirectResponse
     {
-        auth()->logout();
-        toastr()->success('Logout efetuado com sucesso');
-        return redirect()->route('login');
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('hotels.index', absolute: false));
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 
 }

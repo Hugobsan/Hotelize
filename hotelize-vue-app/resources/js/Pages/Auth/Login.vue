@@ -25,10 +25,6 @@ const submit = () => {
     });
 };
 
-const register = () => {
-    form.get(route('register'));
-};
-
 </script>
 
 <template>
@@ -79,7 +75,7 @@ const register = () => {
 
             <!-- Já possui conta link -->
             <div class="flex items-center justify-end mt-4">
-                <Link class="underline text-sm text-gray-600 hover:text-gray-900" @click="register">
+                <Link :href="route('users.create')" class="underline text-sm text-gray-600 hover:text-red-900" @click="register">
                     Não possui conta? Registre-se
                 </Link>
             </div>
