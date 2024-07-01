@@ -1,21 +1,31 @@
 <script setup>
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-    import { Head, Link, useForm } from '@inertiajs/vue3';
-    import HotelsList from '@/Pages/Hotels/HotelsList.vue';
-    import { ref, watch } from 'vue';
-    import axios from 'axios';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
+import RoomsList from "./Rooms/RoomsList.vue";
 
-    const props = defineProps({
-        hotel: {
-            type: Object,
-        },
-    });
+import { ref, watch } from "vue";
 
-    const headers = [
-        { title: 'Nome', value: 'name' },
-        { title: 'Descrição', value: 'description' },
-        { title: 'Ações', value: 'actions', sortable: false },
-    ];
+const props = defineProps({
+    hotel: {
+        type: Object,
+    },
+});
+
+const dialog = ref(false);
+
+const deleteForm = useForm({
+    _method: "delete",
+});
+
+const deleteHotel = () => {
+    if (confirm("Tem certeza que deseja excluir este hotel?")) {
+        deleteForm.post(route("hotels.destroy", { id: props.hotel.id }), {
+            onFinish: () => {
+                router.visit(route("hotels.index"));
+            },
+        });
+    }
+};
 </script>
 
 <template>
@@ -25,59 +35,55 @@
         <template #header>
             <div class="d-flex flex-row justify-between">
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{hotel.name}}</h2>
+                    <h2
+                        class="font-semibold text-xl text-gray-800 leading-tight"
+                    >
+                        {{ hotel.name }}
+                    </h2>
                 </div>
                 <div>
-                    <v-btn class="mx-1" color="warning" @click="dialog = true">Editar</v-btn>
-                    <v-btn class="mx-1" color="info" @click="dialog = true">Visitar Website</v-btn>
-                    <v-btn class="mx-1" color="error" @click="deleteHotel">Excluir</v-btn>
+                    <v-btn
+                        class="mx-1"
+                        color="primary"
+                        @click="dialog = true"
+                        >Editar</v-btn
+                    >
+                    <v-btn class="mx-1" color="error" @click="deleteHotel"
+                        >Excluir</v-btn
+                    >
                 </div>
+            </div>
+            <div>
+                <!-- Exibindo address, city, state, zip_code e website caso possua-->
+                <v-list lines="two">
+                    <v-list-item>
+                        <v-list-item-content>
+                            <v-list-item-title>Endereço</v-list-item-title>
+                            <v-list-item-subtitle>{{
+                                hotel.full_address
+                            }}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-content>
+                            <v-list-item-title>Site</v-list-item-title>
+                            <a href="hotel.website" target="_blank" link
+                                ><v-list-item-subtitle>{{
+                                    hotel.website
+                                }}</v-list-item-subtitle></a
+                            >
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
             </div>
         </template>
-        <div class="mx-4 my-4">
-            <div class="d-flex flex-row justify-between ">
+        <div>
+            <div class="d-flex flex-row justify-end my-3">
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Quartos vinculados</h2>
-                </div>
-                <div>
-                    <v-btn class="mx-1" color="success" >Cadastrar Quarto</v-btn>
+                    <v-btn class="mx-1" color="success">Cadastrar Quarto</v-btn>
                 </div>
             </div>
-            <v-data-table
-                :headers="headers"
-                :items="hotel.rooms"
-                item-key="id"
-                class="elevation-1"
-            >
-                <template v-slot:top>
-                    <v-toolbar flat>
-                        <v-toolbar-title>Quartos</v-toolbar-title>
-                        <v-divider class="mx-4" inset vertical></v-divider>
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                            v-model="search"
-                            append-icon="mdi-magnify"
-                            label="Pesquisar"
-                            single-line
-                            hide-details
-                        ></v-text-field>
-                    </v-toolbar>
-                </template>
-                <template v-slot:item.actions="{ item }">
-                    <v-btn small @click="editRoom(item)"
-                        color="warning"
-                        class="mr-2"
-                    >
-                        <v-icon small>mdi-pencil</v-icon>
-                    </v-btn>
-                    <v-btn small @click="deleteRoom(item)"
-                        color="error"
-                        class="mr-2"
-                    >
-                        <v-icon small>mdi-delete</v-icon>
-                    </v-btn>
-                </template>
-            </v-data-table>
+            <RoomsList :rooms="hotel.rooms" />
         </div>
     </AuthenticatedLayout>
 </template>

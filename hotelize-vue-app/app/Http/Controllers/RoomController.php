@@ -51,10 +51,8 @@ class RoomController extends Controller
             $room = Room::findOrFail($id);
             $room->delete();
         } catch (\Exception $e) {
-            toastr()->error('Erro ao excluir quarto');
             return redirect()->back();
         }
-        toastr()->success('Quarto excluído com sucesso');
 
         return redirect()->route('hotels.show', $room->hotel_id);
     }
