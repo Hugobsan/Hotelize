@@ -55,10 +55,8 @@ class HotelController extends Controller
             $hotel = Hotel::findOrFail($id);
             $hotel->update($request->validated());
         } catch (\Exception $e) {
-            toastr()->error('Erro ao atualizar hotel');
             return redirect()->back();
         }
-        toastr()->success('Hotel atualizado com sucesso');
         
         return redirect()->route('hotels.index');
     }

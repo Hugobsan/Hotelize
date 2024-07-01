@@ -2,16 +2,13 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import RoomsList from "./Rooms/RoomsList.vue";
-
-import { ref, watch } from "vue";
+import HotelsEdit from "./HotelsEdit.vue";
 
 const props = defineProps({
     hotel: {
         type: Object,
     },
 });
-
-const dialog = ref(false);
 
 const deleteForm = useForm({
     _method: "delete",
@@ -42,12 +39,7 @@ const deleteHotel = () => {
                     </h2>
                 </div>
                 <div>
-                    <v-btn
-                        class="mx-1"
-                        color="primary"
-                        @click="dialog = true"
-                        >Editar</v-btn
-                    >
+                    <HotelsEdit :hotel="hotel" />
                     <v-btn class="mx-1" color="error" @click="deleteHotel"
                         >Excluir</v-btn
                     >
