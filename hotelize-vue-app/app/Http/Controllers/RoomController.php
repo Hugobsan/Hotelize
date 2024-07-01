@@ -32,10 +32,8 @@ class RoomController extends Controller
             $room = Room::findOrFail($id);
             $room->update($request->validated());
         } catch (\Exception $e) {
-            toastr()->error('Erro ao atualizar quarto');
             return redirect()->back();
         }
-        toastr()->success('Quarto atualizado com sucesso');
 
         return redirect()->route('hotels.show', $room->hotel_id);
     }

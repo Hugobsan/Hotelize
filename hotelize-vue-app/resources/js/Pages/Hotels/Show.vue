@@ -57,7 +57,7 @@ const deleteHotel = () => {
                             }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item>
+                    <v-list-item v-if="hotel.website">
                         <v-list-item-content>
                             <v-list-item-title>Site</v-list-item-title>
                             <a href="hotel.website" target="_blank" link

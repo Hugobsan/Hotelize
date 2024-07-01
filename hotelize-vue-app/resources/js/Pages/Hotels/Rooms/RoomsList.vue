@@ -3,6 +3,7 @@ import { router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import "@mdi/font/css/materialdesignicons.css";
 import { useForm } from "@inertiajs/vue3";
+import RoomsEdit from "./RoomsEdit.vue";
 
 const props = defineProps({
     rooms: Array,
@@ -56,9 +57,7 @@ const deleteRoom = (room) => {
             </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }">
-            <v-btn small @click="editRoom(item)" color="primary" class="mr-2">
-                <v-icon small>mdi-pencil</v-icon>
-            </v-btn>
+            <RoomsEdit :room="item" />
             <v-btn small @click="deleteRoom(item)" color="error" class="mr-2">
                 <v-icon small>mdi-delete</v-icon>
             </v-btn>
