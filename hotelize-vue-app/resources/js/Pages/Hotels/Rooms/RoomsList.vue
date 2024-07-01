@@ -9,9 +9,9 @@ const props = defineProps({
 });
 
 const headers = [
-    { text: "Nome", value: "name" },
-    { text: "Descrição", value: "description" },
-    { text: "Ações", value: "actions", sortable: false },
+    { title: "Nome", value: "name" },
+    { title: "Descrição", value: "description" },
+    { title: "Ações", value: "actions", sortable: false },
 ];
 
 const search = ref("");
@@ -26,10 +26,6 @@ const filteredRooms = computed(() => {
             room.description.toLowerCase().includes(search.value.toLowerCase())
     );
 });
-
-const editRoom = (room) => {
-    
-};
 
 const deleteRoom = (room) => {
     if (confirm("Tem certeza que deseja excluir este quarto?")) {

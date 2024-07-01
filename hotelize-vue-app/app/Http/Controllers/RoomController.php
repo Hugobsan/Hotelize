@@ -16,10 +16,8 @@ class RoomController extends Controller
         try {
             $room = Room::create($request->validated());
         } catch (\Exception $e) {
-            toastr()->error('Erro ao cadastrar quarto');
             return redirect()->back();
         }
-        toastr()->success('Quarto cadastrado com sucesso');
         
         return redirect()->route('hotels.show', $room->hotel_id);
     }

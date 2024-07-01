@@ -66,42 +66,42 @@ watch(
                 <v-form @submit.prevent="save">
                     <v-container>
                         <v-row>
-                            <v-col cols="12">
+                            <v-col cols="12" sm="12">
                                 <v-text-field
                                     v-model="form.name"
                                     label="Nome"
                                     required
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="4">
+                            <v-col cols="12" sm="4">
                                 <v-text-field
                                     v-model="form.zip_code"
                                     label="CEP"
                                     required
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="8">
+                            <v-col cols="12" sm="8">
                                 <v-text-field
                                     v-model="form.address"
                                     label="Endereço"
                                     required
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="12" sm="12">
                                 <v-text-field
                                     v-model="form.city"
                                     label="Cidade"
                                     readonly
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="6">
+                            <v-col cols="12" sm="6">
                                 <v-text-field
                                     v-model="form.state"
                                     label="Estado"
                                     readonly
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="6">
+                            <v-col cols="12" sm="6">
                                 <v-text-field
                                     v-model="form.website"
                                     label="Site"

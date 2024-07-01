@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import RoomsList from "./Rooms/RoomsList.vue";
 import HotelsEdit from "./HotelsEdit.vue";
+import RoomsCreate from "./Rooms/RoomsCreate.vue";
 
 const props = defineProps({
     hotel: {
@@ -72,7 +73,7 @@ const deleteHotel = () => {
         <div>
             <div class="d-flex flex-row justify-end my-3">
                 <div>
-                    <v-btn class="mx-1" color="success">Cadastrar Quarto</v-btn>
+                    <RoomsCreate :hotel="hotel" />
                 </div>
             </div>
             <RoomsList :rooms="hotel.rooms" />
