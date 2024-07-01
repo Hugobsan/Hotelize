@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Hotel;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -11,43 +12,81 @@ class HotelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_create_hotel()
+    public function testIndex()
     {
-        $response = $this->postJson('/hotels', [
-            'name' => 'Hotel Test',
-            'address' => '123 Main St',
-            'city' => 'Springfield',
-            'state' => 'IL',
-            'zip_code' => '62701-123',
-            'website' => 'https://hotel.test',
-        ]);
+        $user = User::factory()->create();
 
-        $response->assertStatus(201);
-        $response->assertJson([
-            'name' => 'Hotel Test',
-            'address' => '123 Main St',
-            'city' => 'Springfield',
-            'state' => 'IL',
-            'zip_code' => '62701-123',
-            'website' => 'https://hotel.test',
-        ]);
+        $response = $this->actingAs($user)->get(route('hotels.index'));
+
+        $response->assertStatus(200);
     }
 
-    public function test_create_room()
+    public function testStore()
     {
+        $user = User::factory()->create();
+
+        $hotel = Hotel::factory()->make();
+
+        $response = $this->actingAs($user)->post(route('hotels.store'), $hotel->toArray());
+
+        $response->assertRedirect(route('hotels.index'));
+    }
+
+    public function testShow()
+    {
+        $user = User::factory()->create();
+
         $hotel = Hotel::factory()->create();
 
-        $response = $this->postJson('/api/rooms', [
-            'hotel_id' => $hotel->id,
-            'name' => 'Room Test',
-            'description' => 'This is a test room.',
-        ]);
+        $response = $this->actingAs($user)->get(route('hotels.show', $hotel->id));
 
-        $response->assertStatus(201);
-        $response->assertJson([
-            'hotel_id' => $hotel->id,
-            'name' => 'Room Test',
-            'description' => 'This is a test room.',
-        ]);
+        $response->assertStatus(200);
+    }
+
+    public function testUpdate()
+    {
+        $user = User::factory()->create();
+
+        $hotel = Hotel::factory()->create();
+
+        $hotel->name = 'Hotel Alterado';
+
+        $response = $this->actingAs($user)->put(route('hotels.update', $hotel->id), $hotel->toArray());
+
+        $response->assertRedirect(route('hotels.index'));
+    }
+
+    public function testDestroy()
+    {
+        $user = User::factory()->create();
+
+        $hotel = Hotel::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('hotels.destroy', $hotel->id));
+
+        $response->assertRedirect(route('hotels.index'));
+    }
+
+    public function testValidation()
+    {
+        $user = User::factory()->create();
+
+        $hotel = Hotel::factory()->make(['name' => '']);
+
+        $response = $this->actingAs($user)->post(route('hotels.store'), $hotel->toArray());
+
+        $response->assertSessionHasErrors('name');
+    }
+
+    public function testValidationUpdate()
+    {
+        $user = User::factory()->create();
+
+        $hotel = Hotel::factory()->create();
+        $hotel->name = '';
+
+        $response = $this->actingAs($user)->put(route('hotels.update', $hotel->id), $hotel->toArray());
+
+        $response->assertSessionHasErrors('name');
     }
 }

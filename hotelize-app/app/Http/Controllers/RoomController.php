@@ -9,44 +9,37 @@ use Illuminate\Http\Request;
 class RoomController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index($hotelId)
-    {
-        $rooms = Room::where('hotel_id', $hotelId)->get();
-        
-        return response()->json($rooms);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(RoomRequest $request)
     {
-        $room = Room::create($request->validated());
+        try {
+            $room = Room::create($request->validated());
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao cadastrar quarto');
+            return redirect()->back();
+        }
+        toastr()->success('Quarto cadastrado com sucesso');
         
-        return response()->json($room, 201);
+        return redirect()->route('hotels.show', $room->hotel_id);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $room = Room::findOrFail($id);
-
-        return response()->json($room);
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(RoomRequest $request, string $id)
     {
-        $room = Room::findOrFail($id);
-        $room->update($request->validated());
+        try{
+            $room = Room::findOrFail($id);
+            $room->update($request->validated());
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao atualizar quarto');
+            return redirect()->back();
+        }
+        toastr()->success('Quarto atualizado com sucesso');
 
-        return response()->json($room);
+        return redirect()->route('hotels.show', $room->hotel_id);
     }
 
     /**
@@ -54,9 +47,15 @@ class RoomController extends Controller
      */
     public function destroy(string $id)
     {
-        $room = Room::findOrFail($id);
-        $room->delete();
+        try{
+            $room = Room::findOrFail($id);
+            $room->delete();
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao excluir quarto');
+            return redirect()->back();
+        }
+        toastr()->success('Quarto excluído com sucesso');
 
-        return response()->status(204);
+        return redirect()->route('hotels.show', $room->hotel_id);
     }
 }

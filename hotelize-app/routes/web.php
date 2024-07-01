@@ -4,22 +4,29 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CepController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-//Login
-Route::post('login', [AuthController::class, 'login']);
-
-Route::get('/csrf', function () {
-    return response()->json(['csrf' => csrf_token()]);
+Route::get('/', function () {
+    return redirect()->route('hotels.index');
 });
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::post('logout', [AuthController::class, 'logout']);
+//Login
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate'])->name('autenticar');
 
-    Route::resource('hotels', HotelController::class)->except('create', 'edit');
-    Route::resource('hotels.rooms', RoomController::class)->except('create', 'edit')->shallow();
+//Users
+Route::resource('users', UserController::class)->only(['create', 'store']);
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::resource('hotels', HotelController::class)->except(['create']);
+    Route::resource('hotels.rooms', RoomController::class)->except(['index','create','show'])->shallow();
+    Route::resource('users', UserController::class)->except(['create', 'store']);
 
     Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
-        Route::get('cep/{cep}', [CepController::class, 'getCepInfo'])->name('cep');
+        Route::get('cep/{cep?}/', [CepController::class, 'getCepInfo'])->name('cep');
     });
 });

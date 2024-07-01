@@ -18,6 +18,8 @@ class CepController extends Controller
     public function getCepInfo($cep)
     {
         try {
+            //Removendo caracteres especiais
+            $cep = preg_replace('/[^0-9]/', '', $cep);
             $response = $this->client->get("https://viacep.com.br/ws/{$cep}/json/");
             if ($response->getStatusCode() == 200) {
                 $data = json_decode($response->getBody(), true);
