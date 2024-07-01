@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HotelRequest;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HotelController extends Controller
 {
@@ -13,9 +14,11 @@ class HotelController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::orderBy('name')->get();
-        
-        return view('hotels.index', compact('hotels'));
+        $hotels = Hotel::with('rooms')->orderBy('name')->get();
+
+        return Inertia::render('Hotels/Index', [
+            'hotels' => $hotels,
+        ]);
     }
 
     /**
