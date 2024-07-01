@@ -20,6 +20,10 @@ class Hotel extends Model
         'website',
     ];
 
+    protected $appends = [
+        'full_address',
+    ];
+
     public function rooms()
     {
         return $this->hasMany(Room::class);
