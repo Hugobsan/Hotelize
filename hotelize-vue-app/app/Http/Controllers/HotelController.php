@@ -29,11 +29,9 @@ class HotelController extends Controller
         try{
             $hotel = Hotel::create($request->validated());
         } catch (\Exception $e) {
-            toastr()->error('Erro ao cadastrar hotel');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Erro ao criar hotel');
         }
-        toastr()->success('Hotel cadastrado com sucesso');
-        return redirect()->route('hotels.index');
+        return redirect()->route('hotels.index')->with('success', 'Hotel criado com sucesso');
     }
 
     /**

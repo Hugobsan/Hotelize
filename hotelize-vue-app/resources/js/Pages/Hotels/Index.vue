@@ -1,14 +1,59 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { VListItem } from 'vuetify/lib/components/index.mjs';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import HotelsList from '@/Pages/Hotels/HotelsList.vue';
+import { ref, watch } from 'vue';
+import axios from 'axios';
 
-defineProps({
+// Definir a variável reativa `dialog`
+const dialog = ref(false);
+
+const form = useForm({
+    name: '',
+    zip_code: '',
+    address: '',
+    city: '',
+    state: '',
+    website: '',
+});
+
+const props = defineProps({
     hotels: {
         type: Array,
     },
 });
 
+// Função para salvar o hotel
+const save = () => {
+    form.post(route('hotels.store'), {
+        onFinish: () => {
+            form.reset('name', 'zip_code', 'address', 'city', 'state', 'website');
+            dialog.value = false; // Definindo dialog como false corretamente
+        },
+    });
+};
+
+// Função para buscar dados do CEP na API
+const fetchCepData = async (cep) => {
+    cep = cep.replace(/\D/g, '');
+    //Removendo digitos não numéricos
+    if (cep.length === 8) { // Verifica se o CEP tem 8 dígitos
+        try {
+            const response = await axios.get(route('api.cep', { cep }));
+            const data = response.data;
+
+            form.city = data.localidade;
+            form.state = data.uf;
+        } catch (error) {
+            console.error('Erro ao buscar dados do CEP:', error);
+        }
+    }
+};
+
+// Observa mudanças no campo `zip_code` para buscar dados do CEP
+watch(() => form.zip_code, (newCep) => {
+    fetchCepData(newCep);
+});
 </script>
 
 <template>
@@ -16,50 +61,55 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Hotéis</h2>
-        </template>
-        <!-- <VList lines="one">
-            <VListItem v-for="n in 3" :key="n" :title="'Item ' + n"
-                subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit"></VListItem>
-        </VList> -->
-        <!-- <v-content>
-            <table class="
-            min-w-full
-            bg-white
-            border
-            border-gray-300
-            divide-y
-            divide-gray-300
-        ">
-                <thead>
-                    <tr>
-                        <th class="text-left">Nome</th>
-                        <th class="text-left">Endereço</th>
-                        <th class="text-left">CEP</th>
-                        <th class="text-left">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="hotel in hotels" :key="hotel.id">
-                        <td>{{ hotel.name }}</td>
-                        <td>{{ hotel.address }}</td>
-                        <td>{{ hotel.zip_code }}</td>
-                        <td>
-                            <Link v-if="hotel.website" :href="hotel.website">Site</Link>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </v-content> -->
-
-
-        <!-- <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
+            <div class="d-flex flex-row justify-between">
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Hotéis</h2>
+                </div>
+                <div>
+                    <v-btn color="primary" @click="dialog = true">Adicionar</v-btn>
                 </div>
             </div>
-        </div> -->
+        </template>
 
+        <v-dialog v-model="dialog" max-width="720px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Adicionar Hotel</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-text-field v-model="form.name" label="Nome"></v-text-field>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-text-field v-model="form.zip_code" label="00000-000"></v-text-field>
+                            </v-col>
+                            <v-col cols="8">
+                                <v-text-field v-model="form.address" label="Endereço"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field v-model="form.city" label="Cidade"></v-text-field>
+                            </v-col>
+                            <v-col cols="6">
+                                <v-text-field v-model="form.state" label="Estado"></v-text-field>
+                            </v-col>
+                            <v-col cols="6">
+                                <v-text-field v-model="form.website" label="Site"></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="dialog = false">Cancelar</v-btn>
+                    <v-btn color="blue darken-1" text @click="save">Salvar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <div class="mt-1">
+            <HotelsList :hotels="hotels" />
+        </div>
     </AuthenticatedLayout>
 </template>
