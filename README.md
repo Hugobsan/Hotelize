@@ -17,5 +17,6 @@ A pasta hotelize-vue-app contém o projeto com Laravel 11, MySQL e front-end com
 Além disso, em ambas as pastas o projeto está pré-configurado com testes unitários, ambos utilizam a API ViaCEP para preenchimento automático do endereço e ambos estão configurados para utilização do Laravel Sail para facilitar a execução do projeto.
 
 ## Instalação
-Para instalar o projeto, basta clonar o repositório e, selecionada a pasta com a versão do projeto que deseja utilizar, executar o projeto utilizando o Sail ou configurando ambiente local no .env. Após isso, utilize o comando `php artisan migrate` para criar as tabelas no banco de dados e `php artisan db:seed` para popular o banco de dados com dados de teste. Caso deseje, é possível utilizar o comando `php artisan test` para executar os testes unitários.
+Para instalar o projeto, basta clonar o repositório e, selecionada a pasta com a versão do projeto que deseja utilizar, executar o projeto utilizando o Sail ou configurando ambiente local no .env. Caso esteja utilizando o projeto com Vue.js, é necessário instalar as dependências do front-end utilizando o comando `npm install` e, após isso, executar o comando `npm run dev` para compilar o front-end.
+Após isso, utilize o comando `php artisan migrate` para criar as tabelas no banco de dados e `php artisan db:seed` para popular o banco de dados com dados de teste. Caso deseje, é possível utilizar o comando `php artisan test` para executar os testes unitários.
 
