@@ -7,7 +7,10 @@ import { Link } from '@inertiajs/vue3';
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <div>
             <Link href="/">
-                <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
+                <div class="mb-4 text-sm text-gray-600 text-center">
+            <h1 class="text-5xl font-bold text-red-800">Hotelize</h1>
+        </div>
+
             </Link>
         </div>
 

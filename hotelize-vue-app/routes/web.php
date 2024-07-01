@@ -15,12 +15,12 @@ Route::get('/', function () {
     return redirect()->route('hotels.index');
 });
 
-//Login
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'authenticate'])->name('autenticar');
+// //Login
+// Route::get('/login', [AuthController::class, 'login'])->name('login');
+// Route::post('/login', [AuthController::class, 'authenticate'])->name('autenticar');
 
-//Users
-Route::resource('users', UserController::class)->only(['create', 'store']);
+// //Users
+// Route::resource('users', UserController::class)->only(['create', 'store']);
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -43,14 +43,14 @@ Route::group(['middleware' => ['auth']], function () {
 //     ]);
 // });
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';
