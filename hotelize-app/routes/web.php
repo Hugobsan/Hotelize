@@ -8,6 +8,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
+//Main route
+
 Route::get('/', function () {
     return redirect()->route('hotels.index');
 });
