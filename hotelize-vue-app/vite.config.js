@@ -17,4 +17,19 @@ export default defineConfig({
             },
         }),
     ],
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        proxy: {
+            '/app': {
+                target: 'http://localhost',
+                changeOrigin: true,
+                secure: false,
+            },
+        },
+        hmr: {
+            host: 'localhost',
+        },
+    }
 });
